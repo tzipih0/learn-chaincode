@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright IBM Corp 2016 All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +19,16 @@ package main
 import (
 	"errors"
 	"fmt"
-
+	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
+
+// setup a logger for the peers
+var log = shim.NewLogger("att")
+
+// AttestationChaincode is a Chaincode implementation of device attestation
+type AttestationChaincode struct {
+}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -38,7 +45,10 @@ func main() {
 }
 
 // Init resets all the things
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *AttestationChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+
+log.Debug("Init called.")
+
     if len(args) != 1 {
         return nil, errors.New("Incorrect number of arguments. Expecting 1")
     }
